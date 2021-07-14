@@ -1,0 +1,50 @@
+class Solution:
+    def fun_1(self, x: int) -> int:
+        if x < 0:
+            x = list(str(abs(x)))
+            x.reverse()
+            y = int("".join(x)) * -1
+        else:
+            x = list(str(x))
+            x.reverse()
+            y = int("".join(x))
+        if -2147483648 <= y <= 2147483646:
+            return y
+        else:
+            return 0
+
+    def fun_2(self, x: int) -> int:
+        """
+        # 输入：x = 123
+        # 输出：321
+        # 输入：x = -123
+        # 输出：-321
+        Args:
+            x:
+
+        Returns:
+
+        """
+        y = 0
+        while 1:
+            if x >= 0:
+                item = x % 10
+                y = y * 10 + item
+                x = x // 10
+            else:
+                item = x % -10
+                y = y * 10 + item
+                x = -(x // -10)
+            if not x:
+                break
+        if -2147483648 <= y <= 2147483646:
+            return y
+        else:
+            return 0
+
+    def reverse(self, x: int) -> int:
+        return self.fun_1(x=x)
+
+
+# runtime:48 ms
+# memory:14.8 MB
