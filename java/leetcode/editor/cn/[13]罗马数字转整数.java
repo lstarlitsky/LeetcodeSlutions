@@ -75,10 +75,79 @@
 // 👍 1419 👎 0
 
 
+import java.util.HashMap;
+
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
     public int romanToInt(String s) {
+        return goodFun(s);
+    }
 
+    private int myFunc(String s) {
+        HashMap<String, Integer> charMap = new HashMap<String, Integer>();
+        charMap.put("I", 1);
+        charMap.put("V", 5);
+        charMap.put("X", 10);
+        charMap.put("L", 50);
+        charMap.put("C", 100);
+        charMap.put("D", 500);
+        charMap.put("M", 1000);
+        charMap.put("IV", 4);
+        charMap.put("IX", 9);
+        charMap.put("XL", 40);
+        charMap.put("XC", 90);
+        charMap.put("CD", 400);
+        charMap.put("CM", 900);
+        int num = 0;
+        for (int i = 0; i < s.length(); i++) {
+            // 这里要考虑下s切片越界的情况
+            // 切片是左开右闭的
+            if ((i + 2) <= s.length() && charMap.containsKey(s.substring(i, i + 2))) {
+                num += charMap.get(s.substring(i, i + 2));
+                i++;
+            } else {
+                num += charMap.get(s.substring(i, i + 1));
+            }
+        }
+        return num;
+    }
+
+    private int goodFun(String s) {
+        /**
+         * 1. 罗马数字由 `I,V,X,L,C,D,M` 构成；
+         * 2. 当小值在大值的左边，则减小值，如 `IV=5-1=4`；
+         * 3. 当小值在大值的右边，则加小值，如 `VI=5+1=6`；
+         * 4. 由上可知，右值永远为正，因此最后一位必然为正。
+         *
+         * 一言蔽之，**把一个小值放在大值的左边，就是做减法，否则为加法**。
+         */
+        int sum = 0;
+        int preNum = getValue(s.charAt(0));
+        for (int i = 1; i < s.length(); i++) {
+            int num = getValue(s.charAt(i));
+            if (num <= preNum) {
+                sum += preNum;
+            } else {
+                sum -= preNum;
+            }
+            preNum = num;
+        }
+        sum += preNum;
+        return sum;
+    }
+
+    private int getValue(char ch) {
+        switch (ch) {
+            case 'I':return 1;
+            case 'V':return 5;
+            case 'X':return 10;
+            case 'L':return 50;
+            case 'C':return 100;
+            case 'D':return 500;
+            case 'M':return 1000;
+            default:
+                return 0;
+        }
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)
