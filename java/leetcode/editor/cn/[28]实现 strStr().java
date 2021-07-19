@@ -87,23 +87,28 @@ class Solution {
         if (haystack.equals("")) {
             return -1;
         }
+        if (haystack.equals(needle)) {
+            return 0;
+        }
         int[] next = kmpNextArray(needle);
         int i = 0;
         int j = 0;
-        while (i < haystack.length()) {
-            if (haystack.charAt(i) == needle.charAt(j)) {
+        while (i < haystack.length() && j < needle.length()) {
+            if (j == -1 || haystack.charAt(i) == needle.charAt(j)) {
                 i++;
                 j++;
             } else if (j == 0) {
                 i++;
             } else {
-                j = next[j];
+                j = next[j -1];
             }
-            if (j == needle.length() - 1) {
-                return i - j;
-            }
+
         }
-        return -1;
+        if (j == needle.length()) {
+            return i - j;
+        } else {
+            return -1;
+        }
     }
 
 
